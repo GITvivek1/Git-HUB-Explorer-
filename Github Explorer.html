@@ -1,7 +1,6 @@
 <html>
 <head>
   <style>
-    /* Add some style to the page */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -101,111 +100,76 @@
   <div id="content">
     <div id="sidebar">
       <ul id="repositories">        
-        <!-- Use JavaScript to fetch and display the repositories from GitHub API -->
         <script>
-          // Define a function to fetch and display the repositories
           function fetchRepositories() {
-            // Create a new XMLHttpRequest object
             var xhr = new XMLHttpRequest();
             
-            // Define the URL to fetch the repositories from
             var url = "https://api.github.com/repositories";
             
-            // Open a GET request to the URL
             xhr.open("GET", url);
             
-            // Define what to do when the request is successful
             xhr.onload = function() {
-              // Parse the response as JSON
               var data = JSON.parse(xhr.responseText);
               
-              // Loop through the data array
               for (var i = 0; i < data.length; i++) {
-                // Get the repository object at index i
                 var repo = data[i];
                 
-                // Get the repository name and owner
                 var name = repo.name;
                 var owner = repo.owner.login;
 
-                // Create a new list item element
                 var li = document.createElement("li");
                 
-                // Set the text content of the list item to the repository name and owner
                 li.textContent = owner + "/" + name;
 
-                // Set an attribute to store the repository URL
                 li.setAttribute("data-url", repo.url);
 
-                // Add an event listener to handle click events on the list item
                 li.addEventListener("click", function() {
-                  // Get the repository URL from the attribute
                   var url = this.getAttribute("data-url");
 
-                  // Call the function to fetch and display the repository details
                   fetchRepositoryDetails(url);
                 });
 
-                // Append the list item to the repositories list
                 document.getElementById("repositories").appendChild(li);
               }
             };
             
-            // Send the request
             xhr.send();
           }
           
-          // Define a function to fetch and display the repository details
           function fetchRepositoryDetails(url) {
-            // Create a new XMLHttpRequest object
             var xhr = new XMLHttpRequest();
 
-            // Open a GET request to the URL
             xhr.open("GET", url);
 
-            // Define what to do when the request is successful
             xhr.onload = function() {
-              // Parse the response as JSON
               var data = JSON.parse(xhr.responseText);
 
-              // Get the repository name, description, language, stars and forks
               var name = data.name;
               var description = data.description;
               var language = data.language;
               var stars = data.stargazers_count;
               var forks = data.forks_count;
 
-              // Get the main element
               var main = document.getElementById("main");
 
-              // Clear the main element
               main.innerHTML = "";
 
-              // Create a new heading element for the repository name
               var h1 = document.createElement("h1");
 
-              // Set the text content of the heading to the repository name
               h1.textContent = name;
 
-              // Append the heading to the main element
               main.appendChild(h1);
 
-              // Create a new paragraph element for the repository description
               var p1 = document.createElement("p");
 
-              // Set the text content of the paragraph to the repository description
               p1.textContent = description;
 
-              // Append the paragraph to the main element
               main.appendChild(p1);
 
-              // Create a new paragraph element for the repository language, stars and forks
               var p2 = document.createElement("p");
 
-              // Set the text content of the paragraph to the repository language, stars and forks
               p2.textContent = "Language: " + language + " | Stars: " + stars + " | Forks: " + forks;
 
-              // Append the paragraph to the main element
               main.appendChild(p2);
             };
 
@@ -213,83 +177,58 @@
             xhr.send();
           }
 
-          // Define a function to search and display the repositories by keyword
           function searchRepositories(keyword) {
-            // Create a new XMLHttpRequest object
             var xhr = new XMLHttpRequest();
 
-            // Define the URL to search for repositories by keyword
             var url = "https://api.github.com/search/repositories?q=" + keyword;
 
-            // Open a GET request to the URL
             xhr.open("GET", url);
 
-            // Define what to do when the request is successful
             xhr.onload = function() {
-              // Parse the response as JSON
               var data = JSON.parse(xhr.responseText);
 
-              // Get the data array of items (repositories)
               var items = data.items;
 
-              // Get the repositories list element
               var repositories = document.getElementById("repositories");
 
-              // Clear the repositories list element
               repositories.innerHTML = "";
 
-              // Loop through the items array
               for (var i = 0; i < items.length; i++) {
-                // Get the repository object at index i
                 var repo = items[i];
                 
-                // Get the repository name and owner
                 var name = repo.name;
                 var owner = repo.owner.login;
 
-                // Create a new list item element
                 var li = document.createElement("li");
                 
-                // Set the text content of the list item to the repository name and owner
                 li.textContent = owner + "/" + name;
 
-                // Set an attribute to store the repository URL
                 li.setAttribute("data-url", repo.url);
 
-                // Add an event listener to handle click events on the list item
                 li.addEventListener("click", function() {
-                  // Get the repository URL from the attribute
                   var url = this.getAttribute("data-url");
 
-                  // Call the function to fetch and display the repository details
                   fetchRepositoryDetails(url);
                 });
 
-                // Append the list item to the repositories list element
                 repositories.appendChild(li);
               }
             };
 
-            // Send the request
             xhr.send();
           }
 
-          // Call the function to fetch and display some initial repositories when the page loads
           fetchRepositories();
 
-          // Add an event listener to handle click events on the search button
           document.getElementById("search-button").addEventListener("click", function() {
-            // Get the keyword from the search input element
             var keyword = document.getElementById("search-input").value;
 
-            // Call the function to search and display repositories by keyword if it is not empty
             if (keyword) {
               searchRepositories(keyword);
             }
           });
         </script>
         
-        <!-- End of example -->
       </ul>
     </div>
     <div id="main">
